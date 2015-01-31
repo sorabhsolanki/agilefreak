@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.agilefreak.helper.CardKeeper;
+import com.agilefreak.helper.CardKeeper.SessionEstimate;
 
 @WebServlet(name = "roomServlet", urlPatterns = { "/room" })
 public class ControllerServlet extends HttpServlet {
@@ -27,11 +28,11 @@ public class ControllerServlet extends HttpServlet {
         
         
         String roomNo = request.getParameter("roomnumber");
-        List<Integer> lists = CardKeeper.enterRoom(Integer.parseInt(roomNo));
+        List<SessionEstimate> lists = CardKeeper.enterRoom(new Integer(roomNo), request.getSession());
         request.setAttribute("myList", lists);
         request.setAttribute("roomnumber", roomNo);
-        
         request.setAttribute("result", lists.size());
+        request.setAttribute("usercardno", lists.size() - 1);
         
         
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");

@@ -21,8 +21,9 @@
      </script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		
 		$('.xs').click(function() {
-			$('#estimate').text("XS");
+			$('#userestimate').text("XS");
 		});
 		
 		$('.small').click(function() {
@@ -33,9 +34,13 @@
 		setInterval(function(){
 			//Ajax call to check participantsm
 			$.ajax({url:"${pagecontext.request.contextpath}/agilefreak/rest/checkusers/check/" + room,type: "get",success:function(result){
+				var userCardNo = $("#usercardnohide").val();
 				$('#never').empty();
-				for (i = 0; i < result; i++) { 
-					$('#never').append("<div class='col-1-4'><div class='wrap-col' style='margin: 20px;'><p id='estimate' class='text-1'>User <strong>estimate</strong></p></div></div>");
+				for (i = 0; i < result; i++) {
+					if(i == userCardNo)
+					    $('#never').append("<div class='col-1-4'><div class='wrap-col' style='margin: 20px;'><p id='userestimate' class='text-1'>User <strong>check</strong></p></div></div>");
+					else
+						$('#never').append("<div class='col-1-4'><div class='wrap-col' style='margin: 20px;'><p id='estimate' class='text-1'>User <strong>estimate</strong></p></div></div>");
 				}
 			  }});
 		}, 6000);
@@ -73,15 +78,29 @@
 		</div>
     </div>-->
    <!--==============================content================================-->
+   <input type="hidden" id="usercardnohide">
    <section id="content" class="zerogrid">
    <div id="never" class="row block-1">
-   <c:forEach items="${myList}" var="element">
-    
-  <div class="col-1-4"><div class="wrap-col" style="margin: 20px;">
+   <c:forEach items="${myList}" var="element" varStatus="loop">
+   
+   <c:choose>
+      <c:when test="${loop.index == usercardno}">
+      <script>
+       $("#usercardnohide").val(${usercardno});
+     </script>
+      <div class="col-1-4"><div class="wrap-col" style="margin: 20px;">
+            <p id="userestimate" class="text-1">User <strong>check</strong></p>
+        </div></div>
+      </c:when>
+
+      <c:otherwise>
+      <div class="col-1-4"><div class="wrap-col" style="margin: 20px;">
             <p id="estimate" class="text-1">User <strong>estimate</strong></p>
         </div></div>
-        
+      </c:otherwise>
+   </c:choose>
 </c:forEach>
+ 
 </div>
             
    </section> 

@@ -23,4 +23,10 @@ public class RoomRestResource {
     public String loggedIn(@PathParam ("roomnumber") String roomnumber) {
         return CardKeeper.getParticipants(Integer.parseInt(roomnumber)).toString();
     }
+    
+    /*@GET
+    @Path("/extimate/{size}")
+    public String estimate(@PathParam ("size") String size) {
+        CardKeeper.getParticipants(Integer.parseInt(size)).toString();
+    }*/
 }
