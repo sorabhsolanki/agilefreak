@@ -28,11 +28,13 @@ public class ControllerServlet extends HttpServlet {
         
         
         String roomNo = request.getParameter("roomnumber");
-        List<SessionEstimate> lists = CardKeeper.enterRoom(new Integer(roomNo), request.getSession());
-        request.setAttribute("myList", lists);
+        List<SessionEstimate> estimates = CardKeeper.enterRoom(new Integer(roomNo), request.getSession());
+        request.setAttribute("myList", estimates);
         request.setAttribute("roomnumber", roomNo);
-        request.setAttribute("result", lists.size());
-        request.setAttribute("usercardno", lists.size() - 1);
+        request.setAttribute("result", estimates.size());
+        
+        SessionEstimate sessionEstimate = CardKeeper.getSessionEstimateFromListOfSessionEstimates(estimates, request.getSession());
+        request.setAttribute("usercardno", sessionEstimate.getCardNo());
         
         
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
